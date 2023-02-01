@@ -14,9 +14,8 @@ public class BookRepository {
     }
 
     public Book save(Book book){
-        book.setId(id);
-        bookDB.put(id,book);
-        this.id++;
+        book.setId(id++);
+        bookDB.put(book.getId(),book);
         return book;
     }
 
