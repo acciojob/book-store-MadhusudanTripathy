@@ -26,18 +26,16 @@ public class BookRepository {
     }
 
     public List<Book> findAll(){
-        return bookDB.values().stream().toList();
+        return new ArrayList<Book>(bookDB.values());
     }
 
     public void deleteBookById(int id){
         bookDB.remove(id);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         bookDB.clear();
-        return;
     }
-
     public List<Book> findBooksByAuthor(String author){
         List<Book> ls= new ArrayList<>();
         for(Book book : bookDB.values()){
