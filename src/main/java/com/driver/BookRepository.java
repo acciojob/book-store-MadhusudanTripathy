@@ -6,55 +6,48 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookRepository {
 
-    HashMap<Integer, Book> dbBook;
+    private Map<Integer,Book> bookDB;
     private int id;
-
     public BookRepository(){
-        dbBook = new HashMap<>();
-        id = 1;
+        bookDB = new HashMap<>();
+        id=1;
     }
 
     public Book save(Book book){
-        book.setId(id);
-
-        dbBook.put(id, book);
-        id++;
+        book.setId(id++);
+        bookDB.put(book.getId(),book);
         return book;
     }
 
     public Book findBookById(int id){
-        return dbBook.get(id);
+
+        return bookDB.get(id);
     }
 
     public List<Book> findAll(){
-        List<Book> list = new ArrayList<>();
-        for(Book book : dbBook.values())
-            list.add(book);
-        return list;
+        return new ArrayList<Book>(bookDB.values());
     }
 
+    public void deleteBookById(int id){
+        bookDB.remove(id);
+    }
+
+    public void deleteAll() {
+        bookDB.clear();
+    }
     public List<Book> findBooksByAuthor(String author){
-        List<Book> list = new ArrayList<>();
-        for(Book book : dbBook.values()){
-            if(book.getAuthor().equals(author))
-                list.add(book);
+        List<Book> ls= new ArrayList<>();
+        for(Book book : bookDB.values()){
+            if(book.getAuthor().equals(author)) ls.add(book);
         }
-        return list;
+        return ls;
     }
 
     public List<Book> findBooksByGenre(String genre){
-        List<Book> list = new ArrayList<>();
-        for(Book book : dbBook.values()){
-            if(book.getGenre().equals(genre))
-                list.add(book);
+        List<Book> ls= new ArrayList<>();
+        for(Book book : bookDB.values()){
+            if(book.getAuthor().equals(genre)) ls.add(book);
         }
-        return list;
-    }
-    public void deleteBookById(int id){
-        dbBook.remove(id);
-    }
-
-    public void deleteAll(){
-        dbBook.clear();
+        return ls;
     }
 }
