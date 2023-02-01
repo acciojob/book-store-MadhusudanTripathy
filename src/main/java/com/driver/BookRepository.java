@@ -1,57 +1,46 @@
 package com.driver;
 import java.util.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class BookRepository {
 
-    private List<Book> bookList;
+    private Map<Integer,Book> bookDB;
     private int id;
     public BookRepository(){
-        bookList = new ArrayList<>();
+        bookDB = new HashMap<>();
         id=1;
     }
 
     public Book save(Book book){
         book.setId(id);
-        bookList.add(book);
+        bookDB.put(id,book);
         this.id++;
         return book;
     }
 
     public Book findBookById(int id){
-        for(Book book : bookList){
-            if(book.getId()==id) return book;
-        }
-        return null;
+
+        return bookDB.get(id);
     }
 
     public List<Book> findAll(){
-        return bookList;
+        return bookDB.values().stream().toList();
     }
 
     public void deleteBookById(int id){
-        String message="Book Not Available";
-        for(Book book : bookList) {
-            if (book.getId() == id) {
-                bookList.remove(book);
-                message="Book With Id "+id+" Deleted Successfully";
-                break;
-            }
-        }
+        bookDB.remove(id);
     }
 
     public void deleteAll(){
-        bookList.clear();
+        bookDB.clear();
         return;
     }
 
     public List<Book> findBooksByAuthor(String author){
         List<Book> ls= new ArrayList<>();
-        for(Book book : bookList){
+        for(Book book : bookDB.values()){
             if(book.getAuthor().equals(author)) ls.add(book);
         }
         return ls;
@@ -59,7 +48,7 @@ public class BookRepository {
 
     public List<Book> findBooksByGenre(String genre){
         List<Book> ls= new ArrayList<>();
-        for(Book book : bookList){
+        for(Book book : bookDB.values()){
             if(book.getAuthor().equals(genre)) ls.add(book);
         }
         return ls;
