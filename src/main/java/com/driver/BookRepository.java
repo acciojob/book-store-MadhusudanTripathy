@@ -6,48 +6,55 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookRepository {
 
-    private Map<Integer,Book> bookDB;
+    HashMap<Integer, Book> dbBook;
     private int id;
+
     public BookRepository(){
-        bookDB = new HashMap<>();
-        id=1;
+        dbBook = new HashMap<>();
+        id = 1;
     }
 
     public Book save(Book book){
-        book.setId(id++);
-        bookDB.put(book.getId(),book);
+        book.setId(id);
+
+        dbBook.put(id, book);
+        id++;
         return book;
     }
 
     public Book findBookById(int id){
-
-        return bookDB.get(id);
+        return dbBook.get(id);
     }
 
     public List<Book> findAll(){
-        return new ArrayList<Book>(bookDB.values());
+        List<Book> list = new ArrayList<>();
+        for(Book book : dbBook.values())
+            list.add(book);
+        return list;
     }
 
-    public void deleteBookById(int id){
-        bookDB.remove(id);
-    }
-
-    public void deleteAll() {
-        bookDB.clear();
-    }
     public List<Book> findBooksByAuthor(String author){
-        List<Book> ls= new ArrayList<>();
-        for(Book book : bookDB.values()){
-            if(book.getAuthor().equals(author)) ls.add(book);
+        List<Book> list = new ArrayList<>();
+        for(Book book : dbBook.values()){
+            if(book.getAuthor().equals(author))
+                list.add(book);
         }
-        return ls;
+        return list;
     }
 
     public List<Book> findBooksByGenre(String genre){
-        List<Book> ls= new ArrayList<>();
-        for(Book book : bookDB.values()){
-            if(book.getAuthor().equals(genre)) ls.add(book);
+        List<Book> list = new ArrayList<>();
+        for(Book book : dbBook.values()){
+            if(book.getGenre().equals(genre))
+                list.add(book);
         }
-        return ls;
+        return list;
+    }
+    public void deleteBookById(int id){
+        dbBook.remove(id);
+    }
+
+    public void deleteAll(){
+        dbBook.clear();
     }
 }
